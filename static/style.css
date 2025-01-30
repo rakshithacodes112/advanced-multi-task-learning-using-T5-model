@@ -1,0 +1,202 @@
+/* General Styling */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #121212;
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100vh;
+}
+
+/* History Section */
+.history {
+  width: 30%;
+  background-color: #1e1e2f;
+  padding: 20px;
+  overflow-y: auto;
+  border-right: 1px solid #333;
+}
+
+.history h2 {
+  color: #ffffff;
+}
+
+.history ul {
+  list-style: none;
+  padding: 0;
+}
+
+.history li {
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+.truncate {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Tasks Section */
+.tasks {
+  flex-grow: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: #2d2d3a;
+}
+
+.tasks h2 {
+  margin-bottom: 20px;
+}
+
+.task-cards {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.task-btn {
+  background-color: #3b82f6;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  flex: 1;
+  text-align: center;
+  min-width: 150px;
+}
+
+.task-btn:hover {
+  background-color: #2563eb;
+}
+
+/* Input and Output Sections */
+.input-section {
+  display: none;
+  /* Hidden by default */
+  margin-top: 20px;
+  background-color: #1e1e2f;
+  padding: 20px;
+  border-radius: 10px;
+  width: 80%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Input Textarea (Summarization, Translation) */
+textarea {
+  width: 87%;
+  height: 80px;
+  /* Reduced height */
+  padding: 12px;
+  /* Added padding inside textareas */
+  border: none;
+  border-radius: 5px;
+  resize: none;
+  color: #000;
+  font-size: 14px;
+}
+
+/* Output Textarea */
+.output-section textarea {
+  height: 80px;
+  /* Reduced height */
+  padding: 12px;
+  /* Padding inside output textarea */
+}
+
+/* Submit Button */
+button {
+  margin-top: 1rem;
+  background-color: #3b82f6;
+  border: none;
+  padding: 10px 20px;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #2563eb;
+}
+
+/* Question & Answering Section (for parallel layout) */
+.qa-form .qa-fields {
+  display: flex;
+  justify-content: space-between;
+  /* Make textareas parallel */
+  gap: 1rem;
+}
+
+.qa-form .qa-fields textarea {
+  flex: 1;
+  height: 80px;
+  /* Reduced height */
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  resize: none;
+  color: #000;
+  font-size: 14px;
+}
+
+.output-section {
+  margin-top: 20px;
+  background-color: #1e1e2f;
+  color: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+textarea[readonly] {
+  background-color: #2d2d3a;
+  color: #ffffff;
+  cursor: not-allowed;
+  height: 80px;
+  /* Reduced height */
+  padding: 12px;
+  /* Padding inside readonly output */
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .history {
+    width: 100%;
+    height: 30%;
+    border-right: none;
+    border-bottom: 1px solid #333;
+  }
+
+  .tasks {
+    width: 100%;
+    align-items: flex-start;
+  }
+
+  .input-section {
+    width: 100%;
+  }
+
+  .qa-form .qa-fields {
+    flex-direction: column;
+  }
+
+  .qa-form .qa-fields textarea {
+    width: 100%;
+  }
+}

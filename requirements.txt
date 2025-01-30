@@ -1,0 +1,10 @@
+flask
+flask-session
+torch
+transformers
+jinja2
+gunicorn
+tensorboard
+uvicorn
+torchvision
+torchaudio

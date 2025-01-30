@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Activity</title>
+    <link rel="stylesheet" href="/static/style.css" />
+    <style>
+      .input-row {
+        display: flex;
+        gap: 10px;
+      }
+      .input-row textarea {
+        flex: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="history">
+        <h2>History</h2>
+        <ul id="history-list">
+          {% for item in user_history %}
+          <li>
+            <strong>{{ item.task | capitalize }}</strong> on
+            <span class="truncate">{{ item.input | analyze_summary }}</span>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="tasks">
+        <h2>Choose a Task</h2>
+        <div class="task-cards">
+          <button class="task-btn" data-target="summarization-input">
+            Text Summarization
+          </button>
+          <button class="task-btn" data-target="translation-input">
+            Text Translation
+          </button>
+          <button class="task-btn" data-target="qa-input">
+            Question & Answering
+          </button>
+        </div>
+
+        <!-- Summarization Section -->
+        <div class="input-section" id="summarization-input">
+          <h3>Text Summarization</h3>
+          <form class="task-form">
+            <textarea
+              name="text"
+              placeholder="Enter text to summarize..."
+              required
+            ></textarea>
+            <input type="hidden" name="task" value="summarization" />
+            <button type="submit">Submit</button>
+          </form>
+          <div class="output-section">
+            <h3>Summarized Text</h3>
+            <textarea
+              name="output"
+              placeholder="The summarized text will appear here..."
+              readonly
+            ></textarea>
+          </div>
+        </div>
+        <!-- Translation Section -->
+        <div class="input-section" id="translation-input">
+          <h3>Text Translation</h3>
+          <form class="task-form">
+            <textarea
+              name="text"
+              placeholder="Enter text to translate..."
+              required
+            ></textarea>
+            <input type="hidden" name="task" value="translation" />
+            <button type="submit">Submit</button>
+          </form>
+          <div class="output-section">
+            <h3>Translated Text</h3>
+            <textarea
+              name="output"
+              placeholder="The translated text will appear here..."
+              readonly
+            ></textarea>
+          </div>
+        </div>
+
+        <!-- Question Answering Section -->
+        <div class="input-section" id="qa-input">
+          <h3>Question & Answering</h3>
+          <form class="task-form">
+            <div class="input-row">
+              <textarea
+                name="context"
+                placeholder="Enter context..."
+                required
+              ></textarea>
+              <textarea
+                name="question"
+                placeholder="Enter question..."
+                required
+              ></textarea>
+            </div>
+            <input type="hidden" name="task" value="qa" />
+            <button type="submit">Submit</button>
+          </form>
+          <div class="output-section">
+            <h3>Answer</h3>
+            <textarea
+              name="output"
+              placeholder="The answer will appear here..."
+              readonly
+            ></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const taskButtons = document.querySelectorAll(".task-btn");
+        const inputSections = document.querySelectorAll(".input-section");
+        const forms = document.querySelectorAll(".task-form");
+        const historyList = document.getElementById("history-list");
+
+        function hideAllSections() {
+          inputSections.forEach((section) => (section.style.display = "none"));
+        }
+
+        function analyzeSummary(inputText) {
+          const stopwords = new Set([
+            "a",
+            "an",
+            "the",
+            "is",
+            "of",
+            "and",
+            "to",
+            "in",
+            "on",
+            "with",
+            "for",
+            "about",
+            "as",
+            "has",
+            "this",
+            "that",
+            "it",
+            "at",
+            "by",
+            "from",
+          ]);
+
+          // Tokenize and filter words
+          const words = inputText.toLowerCase().match(/\b\w+\b/g) || [];
+          const wordCounts = words
+            .filter((word) => !stopwords.has(word))
+            .reduce((counts, word) => {
+              counts[word] = (counts[word] || 0) + 1;
+              return counts;
+            }, {});
+
+          // Extract top 2 words
+          const importantWords = Object.entries(wordCounts)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 2)
+            .map(
+              (entry) => entry[0].charAt(0).toUpperCase() + entry[0].slice(1)
+            );
+
+          return importantWords.length
+            ? importantWords.join(" ")
+            : "General Topic";
+        }
+
+        taskButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            hideAllSections();
+            const targetId = button.getAttribute("data-target");
+            document.getElementById(targetId).style.display = "block";
+          });
+        });
+
+        forms.forEach((form) => {
+          form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const formData = new FormData(form);
+            const task = formData.get("task");
+
+            let inputText = "";
+            if (task === "qa") {
+              inputText = `Q: ${formData.get("question")} | C: ${formData.get(
+                "context"
+              )}`;
+            } else {
+              inputText = formData.get("text");
+            }
+
+            try {
+              const response = await fetch("/process_input", {
+                method: "POST",
+                body: formData,
+              });
+              const data = await response.json();
+
+              // Show output
+              const outputTextarea = form.nextElementSibling.querySelector(
+                "textarea[name='output']"
+              );
+              outputTextarea.value = data.output;
+
+              // Update history immediately
+              const summarizedInput = analyzeSummary(inputText);
+              const newItem = document.createElement("li");
+              newItem.innerHTML = `<strong>${
+                task.charAt(0).toUpperCase() + task.slice(1)
+              }</strong> on <span class="truncate">${summarizedInput}</span>`;
+              historyList.prepend(newItem);
+            } catch (error) {
+              console.error("Error:", error);
+            }
+          });
+        });
+
+        hideAllSections();
+      });
+    </script>
+  </body>
+</html>
