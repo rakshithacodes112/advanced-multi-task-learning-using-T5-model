@@ -26,9 +26,7 @@ also download the file "https://drive.google.com/file/d/1hIbz1bEJ8zjPCUQcYGtsdiJ
 # Create a virtual environment (optional)
 python -m venv venv
 
-source venv/bin/activate 
-
-# On Windows, use 'venv\Scripts\activate'
+source venv/bin/activate ( On Windows, use 'venv\Scripts\activate') 
 
 # Install dependencies
 pip install -r requirements.txt
