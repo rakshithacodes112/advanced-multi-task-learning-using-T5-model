@@ -25,7 +25,10 @@ also download the file "https://drive.google.com/file/d/1hIbz1bEJ8zjPCUQcYGtsdiJ
 
 # Create a virtual environment (optional)
 python -m venv venv
-source venv/bin/activate  # On Windows, use 'venv\Scripts\activate'
+
+source venv/bin/activate 
+
+# On Windows, use 'venv\Scripts\activate'
 
 # Install dependencies
 pip install -r requirements.txt
@@ -34,8 +37,7 @@ pip install -r requirements.txt
 ### ⿡ Run the Web App
 Start the Flask-based web interface for testing NLP tasks interactively.
 
-bash
-python app.py
+bash - python app.py
 Open http://127.0.0.1:5000/ in your browser.
 
 ## 📊 Model Training & Fine-Tuning
