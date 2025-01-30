@@ -35,14 +35,13 @@ pip install -r requirements.txt
 ### ⿡ Run the Web App
 Start the Flask-based web interface for testing NLP tasks interactively.
 
-bash - python app.py
+bash -   python app.py
 Open http://127.0.0.1:5000/ in your browser.
 
 ## 📊 Model Training & Fine-Tuning
 If you want to fine-tune the model on new datasets:
 
-bash
-python train.py --model_name_or_path t5-base --dataset your_dataset
+bash -   python train.py --model_name_or_path t5-base --dataset your_dataset
 
 ## 📝 Datasets Used
 The model is fine-tuned using:
