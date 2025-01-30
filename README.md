@@ -18,7 +18,9 @@ To get started, clone the repository and install the required dependencies.
 bash
 # Clone the repository
 git clone https://github.com/rakshithacodes112/advanced-multi-task-learning-using-T5-model.git
+
 cd your-repo
+
 also download the file "https://drive.google.com/file/d/1hIbz1bEJ8zjPCUQcYGtsdiJfHDio-OlL/view?usp=drive_link" and copy the same into the local_t5_model folder
 
 # Create a virtual environment (optional)
