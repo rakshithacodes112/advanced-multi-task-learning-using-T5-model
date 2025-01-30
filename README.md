@@ -35,7 +35,7 @@ pip install -r requirements.txt
 ### ⿡ Run the Web App
 Start the Flask-based web interface for testing NLP tasks interactively.
 
-python app.py
+python app.py, 
 Open http://127.0.0.1:5000/ in your browser.
 
 ## 📊 Model Training & Fine-Tuning
